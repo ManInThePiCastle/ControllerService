@@ -1,0 +1,53 @@
+extend layout
+block content
+  .flexbox-container
+    div
+      .ui.top.attached.tabular.menu
+        a.item.active(data-tab='first') Configuration
+        a.item(data-tab='second') Path Service
+        a.item(data-tab='third') Controller Service
+      .ui.bottom.attached.tab.segment.active(data-tab='first')
+        form.ui.form
+          h2 Configuration
+          .field
+            label(for='config-square-size') Square Size (mm)
+            small The width of an individual square on the board surface
+            input#config-square-size(value='42.6212')
+          .field
+            label(for='config-board-height') Board Height
+            small Height from the table to board surface (mm)
+            input#config-board-height(value='29.2862')
+          .field
+            label(for='config-distance-to-playing-surface') Distance to Playing Surface
+            small Distance from the arm to the center edge of the playing surface (mm)
+            input#config-distance-to-playing-surface(value='11.176')
+          .field
+            label(for='config-move-height') Tallest Piece (mm)
+            small Used as the height, away from the board surface, to lift pieces
+            input#config-move-height(value='71.6534')
+          .field
+            label(for='ai-level') AI Level (1-10)
+            small Difficulty of the AI (1=easy, 10=hard)
+            input#ai-level(value='1')
+      .ui.bottom.attached.tab.segment(data-tab='second')
+        form.ui.form
+          h2 Path Service
+          .field
+            label(for='movement-from') From 
+            input#movement-from
+          .field
+            label(for='movement-to') To 
+            input#movement-to
+          .ui.buttons
+            button.ui.button.green(onclick="callPathService($('#movement-from').val(), $('#movement-to').val()); return false;") Move
+      .ui.bottom.attached.tab.segment(data-tab='third')
+        form.ui.form
+          h2 Controller Service
+          .field
+            label(for='ctrl-cmd') Command 
+            input#ctrl-cmd
+          .ui.buttons
+            button.ui.button.green(onclick="sendCommand($('#ctrl-cmd').val()); return false;") Send            
+    div
+      h2 Console
+      #console

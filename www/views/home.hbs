@@ -1,0 +1,74 @@
+
+<div class="flexbox-container">
+  <div>
+    <div class="ui top attached tabular menu">
+      <a class="item active" data-tab="first">Configuration</a>
+      <a class="item" data-tab="second">Path Service</a>
+    </div>
+  
+    <div class="ui bottom attached tab segment active" data-tab="first">
+      <form class="ui form">
+        <h2>Configuration</h2>
+        <div class="field">
+          <label for="config-square-size">Square Size (mm)</label>
+          <small>The width of an individual square on the board surface</small>
+          <input id="config-square-size" value="42.6212" />
+        </div>
+        <div class="field">
+          <label for="config-board-height">Board Height</label>
+          <small>Height from the table to board surface (mm)</small>
+          <input id="config-board-height" value="29.2862" />
+        </div>
+        <div class="field">
+          <label for="config-distance-to-playing-surface">Distance to Playing Surface</label>
+          <small>Distance from the arm to the center edge of the playing surface (mm)</small>
+          <input id="config-distance-to-playing-surface" value="11.176" />
+        </div>            
+        <div class="field">
+          <label for="config-move-height">Tallest Piece (mm)</label>
+          <small>Used as the height, away from the board surface, to lift pieces</small>
+          <input id="config-move-height" value="71.6534" />
+        </div>
+        <div class="field">
+          <label for="ai-level">AI Level (1-10)</label>
+          <small>Difficulty of the AI (1=easy, 10=hard)</small>
+          <input id="ai-level" value="1" />
+        </div>
+      </form>
+    </div>
+
+    <div class="ui bottom attached tab segment" data-tab="second">
+      <form class="ui form">
+        <h2>Path Service</h2>
+          <div class="field">
+          <label for="movement-from">From </label> <input id="movement-from" />
+        </div>
+        <div class="field">
+          <label for="movement-to">To </label>
+          <input id="movement-to" />
+        </div>
+
+        <div class="ui buttons">
+          <button class="ui button green" onclick="callPathService($('#movement-from').val(), $('#movement-to').val()); return false;">Move</button>
+ {{!--          <div class="or"></div>
+          <button class="ui button blue">Open</button>
+          <div class="or"></div>
+          <button id="class="ui button orange">Close</button> --}}
+        </div>
+      </form> 
+    </div>
+
+  </div>
+
+  <div>
+    <h2>Console</h2>
+    <div id="console" ></div>
+
+  </div>
+</div>
+
+
+
+
+
+
