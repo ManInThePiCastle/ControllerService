@@ -13,14 +13,39 @@
   margin-right: 20px;
 }
 
+html  {
+  background: url(/images/bg-fade.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  font-size:14px;
+}
+
 body {
   font-family: 'Comfortaa', cursive;
+  background-color: transparent;
+
+}
+
+.ui.segment {
+  font-size:0.9em;
+}
+
+.ui.form input:not([type]) {
+  padding: .5em .8em
+}
+
+
+h3 {
+  color: tomato;
 }
 
 header {
   display:flex;
   align-items: center;
   font-size:1.7em;
+  width: 100%;
   span {
     color: tomato;
   }
@@ -28,13 +53,57 @@ header {
     flex-grow:0;
     flex-shrink:0;
   }
+
+  .conn_status {
+    display:flex;
+    align-items: center;
+    margin-left: auto;
+    padding-right:20px; 
+    img {
+      height: 32px;
+      flex-grow:0;
+      flex-shrink:0;
+    }
+
+    &.connected {
+      display:none;
+      div {
+        display: inline-block;
+      }
+      span {
+        color: #369d59;
+        
+        
+        display: block;
+        
+        &#armIP {
+          text-align:right;
+          font-size:0.5em
+        }
+      }
+    }
+
+    &.disconnected {
+      color: #9f2e2e
+    }
+  }
 }
 
+span.clear {
+  font-size: .6em;
+  float:right;
+  padding-right:20px;
+}
 
 code {
   font-size:0.8em;
   color: blue;
+  &.green {
+    color: green;
+  }
 }
+
+
 
 #logo {
   height: 64px;
@@ -44,6 +113,8 @@ code {
   font-family: 'Roboto Mono', monospace;
   background-color: #dedede;
   min-height: 100px;
+  height: 80%;
+  overflow: scroll;
 }
 
 .Grid {

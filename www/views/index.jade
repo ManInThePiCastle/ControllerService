@@ -4,8 +4,9 @@ block content
     div
       .ui.top.attached.tabular.menu
         a.item.active(data-tab='first') Configuration
-        a.item(data-tab='second') Path Service
-        a.item(data-tab='third') Controller Service
+        a.item(data-tab='second') Chess Service
+        a.item(data-tab='third') Path Service
+        a.item(data-tab='fourth') Controller Service
       .ui.bottom.attached.tab.segment.active(data-tab='first')
         form.ui.form
           h2 Configuration
@@ -30,24 +31,87 @@ block content
             small Difficulty of the AI (1=easy, 10=hard)
             input#ai-level(value='1')
       .ui.bottom.attached.tab.segment(data-tab='second')
+        h2 Chess Service
+        h3 Human Move
+        .ui.segment
+          p Input a human move to be sent to chess service.  Will result in command being sent to path service followed by controller service to execute the responding move.
         form.ui.form
-          h2 Path Service
-          .field
-            label(for='movement-from') From 
-            input#movement-from
-          .field
-            label(for='movement-to') To 
-            input#movement-to
+          .fields
+            .field
+              label(for='human-move-from') From Square
+              input#human-move-from(value='b4')
+            .field
+              label(for='human-move-to') To Square
+              input#human-move-to(value='b5')            
+          .ui.buttons
+            button.ui.button.green(onclick="humanMove($('#human-move-from').val(), $('#human-move-to').val() ); return false;") Go
+        //- .ui.horizontal.divider
+        //-   | Or
+
+      .ui.bottom.attached.tab.segment(data-tab='third')
+        h2 Path Service
+        h3 Manual Arm Move
+        .ui.segment
+          p Manually execute a move as the arm which will be sent to path service then controller. Input square positions (example: a1, h8)
+        form.ui.form
+          .fields
+            .field
+              label(for='movement-from') From Square
+              input#movement-from(value='a1')
+            .field
+              label(for='movement-to') To Square
+              input#movement-to(value='h8')
           .ui.buttons
             button.ui.button.green(onclick="callPathService($('#movement-from').val(), $('#movement-to').val()); return false;") Move
-      .ui.bottom.attached.tab.segment(data-tab='third')
+      .ui.bottom.attached.tab.segment(data-tab='fourth')
+        h2 Controller Service
+        h3 Manual Command
+        .ui.segment
+          p Manually execute a command.  Will be send as the REST endpoint to the movement service. Example '/move/&lt;x&gt;/&lt;y&gt;/&lt;z&gt;' or '/manualcontrol/&lt;articulation-point&gt;/&lt;direction&gt;/&lt;#steps&gt;'.       
         form.ui.form
-          h2 Controller Service
           .field
             label(for='ctrl-cmd') Command 
             input#ctrl-cmd
           .ui.buttons
-            button.ui.button.green(onclick="sendCommand($('#ctrl-cmd').val()); return false;") Send            
+            button.ui.button.green(onclick="sendCommand($('#ctrl-cmd').val()); return false;") Send
+        .ui.horizontal.divider
+          | Or       
+        h3 Articulation Command
+        .ui.segment
+          p Articulate the arm at a given point for any number of steps.  Valid articulation points: 1-6.               
+        form.ui.form
+          .fields
+            .field
+              label(for='ctrl-art-point') Articulation Point 
+              input#ctrl-art-point
+            .field
+              label(for='ctrl-art-steps') # Steps 
+              input#ctrl-art-steps                               
+          .ui.buttons
+            button.ui.button.teal(onclick="articulate($('#ctrl-art-point').val(), 0, $('#ctrl-art-steps').val()); return false;") Forward
+            .or
+            button.ui.button.orange(onclick="articulate($('#ctrl-art-point').val(), 1, $('#ctrl-art-steps').val()); return false;") Reverse
+        .ui.horizontal.divider
+          | Or             
+        h3 Move Command
+        .ui.segment
+          p Move to a given x,y,z coordinate. Values should be in mm and are centered at front edge of arm base.           
+        form.ui.form
+          .fields
+            .field
+              label(for='ctrl-move-x') x 
+              input#ctrl-move-x
+            .field
+              label(for='ctrl-move-y') y 
+              input#ctrl-move-y
+            .field
+              label(for='ctrl-move-z') z 
+              input#ctrl-move-z                                            
+          .ui.buttons
+            button.ui.button.green(onclick="moveToCoord($('#ctrl-move-x').val(), $('#ctrl-move-y').val(), $('#ctrl-move-z').val()); return false;") Move          
     div
       h2 Console
+        span.clear
+          a(href="#", onclick="clearConsole()")
+            | Clear
       #console

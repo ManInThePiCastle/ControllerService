@@ -5,7 +5,7 @@ BUILD_TAG=${2:-"dev"}
 
 DOCKER_REPO="bartlettc"
 CONTAINER_NAME="mpccontrollerservice"
-LOCAL_PORT=8090
+LOCAL_PORT=31415
 
 if [ $COMMAND == "build" ]; then 
 

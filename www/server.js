@@ -11,7 +11,12 @@ var logger = require('morgan');
 
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-var port = 80
+
+if(process.env.NODE_ENV == "development") {
+  var port = 31415
+} else {
+  var port = 80
+}
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -55,31 +60,74 @@ app.use('/semantic', express.static('semantic'))
 // app.use(express.static(__dirname + '/public'));
 // app.use('/users', users);
 
+var armConnected = false;
 io.on('connection', function(socket){
-  console.log('socket: a user connected');
   
-  socket.on('arm_connected', function (data, data2) {
-    console.log('socket: a robot arm connected ' + data);
-    io.emit('robot_connected', data);
-  });
+  if(socket.handshake.query.name == "arm") {
+
+    console.log('robot arm connected ' + socket.handshake.query.ip);
+
+    // Tell everyone the robot connected
+    armConnected = socket.handshake.query.ip;
+    io.emit('arm_connected', armConnected);
+
+    
+    
+    socket.on('disconnect', function(data){
+      
+      // Tell everyone the robot disconnected
+      io.emit('arm_disconnected');
+
+      armConnected = false;
+      console.log('robot arm disconnected');
+    });
+  } else {
+    console.log('socket: a web user connected');
+
+    // If robot arm connect, tell user
+    if(armConnected) {
+      socket.emit('arm_connected', armConnected);  
+    }
+    
+    socket.on('disconnect', function(data){
+      console.log('web user disconnected');
+      // console.log(data);
+      // var i = allClients.indexOf(socket);
+      // console.log(allClients[i]);
+      // delete allClients[i];
+    });
+  }
+  
+  // socket.on('arm_connected', function (data, data2) {
+
+  // });
+
+  // If the arm is connect, tell this new person;
+  // socket.emit('arm_connected', armConnected);
+
+
   socket.on('send_command', function (command) {
     console.log('socket: command recieved: ' + command);
     io.emit('command', command);
-    console.log(io.sockets.clients());
   });
-  socket.on('arm_disconnected', function (command) {
-    console.log('socket: arm disconnected');
-    io.emit('robot_disconnected');
-  });
+
+
 
   
 });
 
-io.use(function(socket, next) {
-  var handshakeData = socket.request;
-  console.log("middleware:", handshakeData._query['name']);
-  next();
-});
+
+
+
+// t.on('disconnect', function(){
+//     socket.broadcast.to(roomName).emit('user_leave', {user_name: "johnjoe123"});
+// });
+
+// io.use(function(socket, next) {
+//   var handshakeData = socket.request;
+//   console.log("middleware:", handshakeData._query['name']);
+//   next();
+// });
 
 
 
