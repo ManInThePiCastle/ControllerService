@@ -9,6 +9,10 @@ $(function () {
     logConsole('Controller', '> Connected to Controller Service');
   });
 
+  socket.on('disconnect', function(msg){
+    logConsole('Controller', '> Disconnected from Controller Service');
+  });  
+
   socket.on('arm_connected', function(data) {
     var ipregex = /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/;
     var ip =data.match(ipregex);
@@ -74,7 +78,7 @@ function callPathService(from, to) {
         // Offset x=0 to be center of board instad of position a1
         // Add y-offset (distance to board) 
         // and z-offset (height of board)
-        position.add(new THREE.Vector3(playingSurfaceLength/2, Number($('#config-distance-to-playing-surface').val()), Number($('#config-board-height').val()) + 1));
+        position.add(new THREE.Vector3(-1*(playingSurfaceLength/2), Number($('#config-distance-to-playing-surface').val()), Number($('#config-board-height').val()) + 1));
         // Finally, offset the 
         moveToCoord(Math.round(position.x), Math.round(position.y), Math.round(position.z));
       } else {
