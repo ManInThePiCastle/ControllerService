@@ -10,9 +10,7 @@ var logger = require('morgan');
 
 
 var server = require('http').Server(app);
-var io = require('socket.io')(server);
-io.set('close timeout', 10);
-io.set('heartbeat timeout', 10);
+var io = require('socket.io')(server, {'pingInterval': 2000, 'pingTimeout': 5000});
 
 if(process.env.NODE_ENV == "development") {
   var port = 31415

@@ -1,6 +1,12 @@
 var socket;
 $(function () {
-
+  $('.ui.buttons .button').on('click', function() {
+        $(this)
+          .addClass('active')
+          .siblings()
+          .removeClass('active')
+        ;
+      });
   $('.menu .item').tab({});
 
   socket = io();
@@ -90,8 +96,25 @@ function callPathService(from, to) {
   });
 }
 
-function articulate(point, direction, steps) {
-  sendCommand("/manualcontrol/"+point+"/"+direction+"/"+steps);
+function motor(hat, position, direction, steps) {
+  sendCommand("/motor/"+hat+"/"+position+'/'+direction+"/"+steps);
+}
+
+function articulate(type, point, direction, amount) {
+  if(type == "Degrees") {
+    sendCommand("/art-degrees/"+point+"/"+direction+"/"+amount);
+  } else {
+    sendCommand("/art-step/"+point+"/"+direction+"/"+amount);
+  }
+}
+
+
+function startGame() {
+  logConsole('Chess', 'Starting New Game...');
+}
+
+function endGame() {
+  logConsole('Chess', 'Ending Game...');
 }
 
 function humanMove(from, to) {
@@ -127,3 +150,11 @@ function moveToCoord(x, y, z) {
 function graspCommand(command) {
   sendCommand("/grabber/"+command);
 }
+
+
+
+
+
+
+
+

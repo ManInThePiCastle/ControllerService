@@ -45,9 +45,10 @@ block content
               input#human-move-to(value='b5')            
           .ui.buttons
             button.ui.button.green(onclick="humanMove($('#human-move-from').val(), $('#human-move-to').val() ); return false;") Go
-        //- .ui.horizontal.divider
-        //-   | Or
-
+            .or
+            button.ui.button.teal(onclick="startGame(); return false;") Start Game
+            .or
+            button.ui.button.orange(onclick="endGame(); return false;") End Game
       .ui.bottom.attached.tab.segment(data-tab='third')
         h2 Path Service
         h3 Manual Arm Move
@@ -85,12 +86,39 @@ block content
               label(for='ctrl-art-point') Articulation Point 
               input#ctrl-art-point
             .field
-              label(for='ctrl-art-steps') # Steps 
-              input#ctrl-art-steps                               
+              label(for='ctrl-art-steps') Amount
+              input#ctrl-art-steps 
+            .field
+              label(for='ctrl-art-type') Type
+              #artType.ui.buttons
+                  button.ui.button.active
+                    | Steps
+                  button.ui.button
+                    | Degrees                                             
           .ui.buttons
-            button.ui.button.teal(onclick="articulate($('#ctrl-art-point').val(), 0, $('#ctrl-art-steps').val()); return false;") Forward
+            button.ui.button.teal(onclick="articulate($('#artType button.active').html().trim(), $('#ctrl-art-point').val(), 0, $('#ctrl-art-steps').val()); return false;") Forward
             .or
-            button.ui.button.orange(onclick="articulate($('#ctrl-art-point').val(), 1, $('#ctrl-art-steps').val()); return false;") Reverse
+            button.ui.button.orange(onclick="articulate($('#artType button.active').html().trim(), $('#ctrl-art-point').val(), 1, $('#ctrl-art-steps').val()); return false;") Reverse
+        .ui.horizontal.divider
+          | Or       
+        h3 Motor Command
+        .ui.segment
+          p Step a single motor.  Valid motor numbers: 1-7.               
+        form.ui.form
+          .fields
+            .field
+              label(for='ctrl-motor-hat') Hat 
+              input#ctrl-motor-hat
+            .field
+              label(for='ctrl-motor-pos') Position 
+              input#ctrl-motor-pos                
+            .field
+              label(for='ctrl-motor-steps') # Steps 
+              input#ctrl-motor-steps                               
+          .ui.buttons
+            button.ui.button.teal(onclick="motor($('#ctrl-motor-hat').val(), $('#ctrl-motor-pos').val(), 0, $('#ctrl-motor-steps').val()); return false;") Forward
+            .or
+            button.ui.button.orange(onclick="motor($('#ctrl-motor-hat').val(), $('#ctrl-motor-pos').val(), 1, $('#ctrl-motor-steps').val()); return false;") Reverse            
         .ui.horizontal.divider
           | Or             
         h3 Move Command
